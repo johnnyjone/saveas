@@ -3,6 +3,7 @@ import pandas as pd
 import yfinance as yf
 import streamlit as st
 
+st.title('APR Tech. Build your own portfolio')
 st.sidebar.image("APR Tech.jpg",width=300)
 
 stocks = [
@@ -70,16 +71,18 @@ def load_data():
 
 df = load_data()
 
-st.title('APR')
+tab_selection = st.sidebar.radio("Select a tab:", ["Financial Dashboard", "Portfolio Creation"])
 
 # Add a sidebar to select stocks to display
 names = [stocks[i][0] for i in range(len(stocks))]
 names.sort()
-st.sidebar.subheader('Filter displayed stocks')
-stocks_selection = st.sidebar.multiselect('Select stocks to view', options=names)
 
-# Filter stocks according to user input
-df = df.loc[:, df.columns.isin(stocks_selection)]
+if tab_selection == "Financial Dashboard":
+    st.sidebar.subheader('Filter displayed stocks')
+    stocks_selection = st.sidebar.multiselect('Select stocks to view', options=names)
 
-# Display stocks prices chart
-st.line_chart(df)
+    # Filter stocks according to user input
+    df = df.loc[:, df.columns.isin(stocks_selection)]
+
+    # Display stocks prices chart
+    st.line_chart(df)
