@@ -54,8 +54,8 @@ stocks.sort(key=lambda x: x[1])
 # Cache the web scrapped data so that it is download only once at startup
 @st.cache
 def load_data():
-    start = datetime.date(2017, 1, 1)
-    end = datetime.date(2022, 1, 1)
+    start = datetime.date(2018, 1, 1)
+    end = datetime.date(2023, 1, 1)
 
     # Srap stock prices with yfinance
     prices = yf.download([stocks[i][1] for i in range(len(stocks))], start, end)['Adj Close']
