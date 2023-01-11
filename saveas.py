@@ -3,7 +3,7 @@ import pandas as pd
 import yfinance as yf
 import streamlit as st
 
-
+st.sidebar.image("APR Tech.jpg",width=300)
 
 stocks = [
     ["Air liquide", "AI.PA"],
