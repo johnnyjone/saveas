@@ -131,7 +131,7 @@ while vol < 0 :
 while stocks_nb not in range(2, 41):
     if vol < 200 :
                stock_nb = 3
-    else if vol < 1000 :
+    if vol < 1000 :
                stock_nb = 4
     else :
                stock_nb = 5
