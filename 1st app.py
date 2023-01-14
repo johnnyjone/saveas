@@ -29,3 +29,48 @@ D = [["Michelin", "ML.PA"], ["Bouygues", "EN.PA"], ["Danone", "BN.PA"], ["STMicr
 E = [["Thales", "HO.PA"], ["Airbus", "AIR.PA"], ["Safran", "SAF.PA"]]
 F = [["ArcelorMittal", "MT.AS"], ["Air liquide", "AI.PA"]]
 G = [["BNP Paribas", "BNP.PA"], ["Dassault Systèmes", "DSY.PA"], ["Crédit agricole", "ACA.PA"], ["TotalEnergies", "TTE.PA"], ["Société générale", "GLE.PA"]]
+
+
+stocks_40 = [
+    ["Air liquide", "AI.PA"],  91
+    ["Airbus", "AIR.PA"],  87
+    ["Alstom", "ALO.PA"],  94
+    ["ArcelorMittal", "MT.AS"],  82
+    ["Atos", "ATO.PA"],  
+    ["Axa", "CS.PA"],  93
+    ["BNP Paribas", "BNP.PA"],  87
+    ["Bouygues", "EN.PA"],  83
+    ["Capgemini", "CAP.PA"],  94
+    ["Carrefour", "CA.PA"],  85
+    ["Crédit agricole", "ACA.PA"],  88
+    ["Danone", "BN.PA"],  89
+    ["Dassault Systèmes", "DSY.PA"],
+    ["Engie", "ENGI.PA"],  88
+    ["EssilorLuxottica", "EL.PA"],  94
+    ["Hermès International", "RMS.PA"],
+    ["Kering", "KER.PA"],  95
+    ["Legrand", "LR.PA"],  91
+    ["L'Oréal", "OR.PA"],  95
+    ["LVMH", "MC.PA"],  91
+    ["Michelin", "ML.PA"], 93
+    ["Orange", "ORA.PA"],  99
+    ["Pernod Ricard", "RI.PA"], 81
+    ["Peugeot", "PEUG.PA"],  89
+    ["Publicis Groupe", "PUB.PA"],
+    ["Renault", "RNO.PA"],  88
+    ["Safran", "SAF.PA"],  90
+    ["Saint-Gobain", "SGO.PA"],
+    ["Sanofi", "SAN.PA"], 87
+    ["Schneider Electric", "SU.PA"],  94
+    ["Société générale", "GLE.PA"],  86
+    ["Stellantis", "STLA.PA"],
+    ["STMicroelectronics", "STM.PA"],  88
+    ["Teleperformance", "TEP.PA"],
+    ["Thales", "HO.PA"],
+    ["TotalEnergies", "TTE.PA"],  90
+    ["Unibail-Rodamco-Westfield", "URW.AS"],  92
+    ["Veolia", "VIE.PA"],  88
+    ["Vinci", "DG.PA"],  83
+    ["Vivendi", "VIV.PA"],  84
+    ["Worldline", "WLN.PA"]]
+
