@@ -6,6 +6,32 @@ import streamlit as st
 st.title('APR Tech. Build your own portfolio')
 st.sidebar.image("APR Tech.jpg",width=300)
 
+st.subheader('CAC40 index')
+
+#extraction des données de l'indice cac40
+@st.cache
+def load_dataindicecac():
+    startindicecac = datetime.date(2017, 1, 1)
+    endindicecac = datetime.date(2022, 1, 1)
+
+    # Srap stock prices with yfinance
+    pricesindice = yf.download('^FCHI', startindicecac, endindicecac)['Adj Close']
+
+    dfindice = pd.DataFrame(pricesindice)
+
+    return dfindice
+
+dfindice = load_dataindicecac()
+
+# Display stocks prices chart
+st.line_chart(dfindice)
+
+
+
+
+
+st.subheader('Stock prices')
+
 stocks = [
     ["Air liquide", "AI.PA"],
     ["Airbus", "AIR.PA"],
@@ -105,21 +131,63 @@ def load_data():
 
 df = load_data()
 
-tab_selection = st.sidebar.radio("Select a tab:", ["Financial Dashboard", "Portfolio Creation"])
 
-# Add a sidebar to select stocks to display
+#calcul cours normalisés, attention peut pas réutiliser df (changé juste avant)
+@st.cache
+def load_datanorm():
+    startnorm = datetime.date(2017, 1, 1)
+    endnorm = datetime.date(2022, 1, 1)
+
+    # Srap stock prices with yfinance
+    pricesnorm = yf.download([stocks[i][1] for i in range(len(stocks))], startnorm, endnorm)['Adj Close']
+
+    dfnorm = pd.DataFrame(pricesnorm)
+
+    # Add stocks names as columns names
+    dfnorm.columns = [stocks[i][0] for i in range(len(stocks))]
+
+    return dfnorm
+dfnorm = load_datanorm()
+
+normalized_data = {}
+for i in range(len(stocks)):
+    normalized_data[stocks[i][0]] = dfnorm[stocks[i][0]] / dfnorm[stocks[i][0]].iloc[0]
+#don't keep it as dictionnary
+dontdicnormdata = pd.DataFrame.from_dict(normalized_data)
+
 names = [stocks[i][0] for i in range(len(stocks))]
 names.sort()
+st.sidebar.subheader('Filter displayed stocks in stock prices graph')
+stocks_selection = st.sidebar.multiselect('Select stocks to view', options=names)
+
+
+
+tab_selection = st.sidebar.radio("Select a tab:", ["Financial Dashboard", "Portfolio Creation"])
 
 if tab_selection == "Financial Dashboard":
-    st.sidebar.subheader('Filter displayed stocks')
-    stocks_selection = st.sidebar.multiselect('Select stocks to view', options=names)
+    
+# Filter stocks according to user input
+if stocks_selection:
+    df1 = df.loc[:, df.columns.isin(stocks_selection)]
+    df2 = dontdicnormdata.loc[:, dontdicnormdata.columns.isin(stocks_selection)]
+    st.line_chart(df1)
+    st.subheader('Normalized courses')
+    st.line_chart(df2)
+else:
+    st.warning('Please select at least one stock')
 
-    # Filter stocks according to user input
-    df = df.loc[:, df.columns.isin(stocks_selection)]
-
-    # Display stocks prices chart
-    st.line_chart(df)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 #Initialisation var nbr stock in portfolio
 vol = -1
