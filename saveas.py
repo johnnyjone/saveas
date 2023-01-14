@@ -172,35 +172,20 @@ if tab_selection == "Financial Dashboard":
         st.subheader('Normalized courses')
         st.line_chart(df2)
     else:
-        st.warning('Please select at least one stock')
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        st.warning('Please select at least one stock')   
     
 #Initialisation var nbr stock in portfolio
-vol = -1
-stocks_nb = 0
+vol = int(input("How much are you willing to invest (in €) ?"))
+stock_nb = 0
 
 while vol < 0 :
-    vol = int (input("How much are you willing to invest ?")
-               
-while stocks_nb not in range(2, 41):
-    if vol < 200 :
-               stock_nb = 3
-    if vol < 1000 :
-               stock_nb = 4
-    else :
-               stock_nb = 5
+    vol = int (input("Please use a positive number ?"))
+if vol < 200 :
+    stock_nb = 3
+if 201 < vol < 1000 :
+    stock_nb = 4
+if vol > 999 :
+    stock_nb = 5
               
 stocks_random = np.random.choice(range(len(stocks_40)), stocks_nb, replace=False)
 stocks_random.sort()
