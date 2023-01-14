@@ -34,7 +34,7 @@ st.line_chart(dfindice)
 
 st.subheader('Stock prices')
 
-stocks = [
+stocks_40 = [
     ["Air liquide", "AI.PA"],
     ["Airbus", "AIR.PA"],
     ["Alstom", "ALO.PA"],
@@ -78,7 +78,7 @@ stocks = [
     ["Worldline", "WLN.PA"]]
 
 # sort by ticker (because yfinance output is sorted by ticker)
-stocks.sort(key=lambda x: x[1])
+stocks_40.sort(key=lambda x: x[1])
 
 # create categories for companies
 actfin = [["Axa", "CS.PA"],
@@ -121,12 +121,12 @@ def load_data():
     end = datetime.date(2023, 1, 1)
 
     # Srap stock prices with yfinance
-    prices = yf.download([stocks[i][1] for i in range(len(stocks))], start, end)['Adj Close']
+    prices = yf.download([stocks_40[i][1] for i in range(len(stocks))], start, end)['Adj Close']
 
     df = pd.DataFrame(prices)
 
     # Add stocks names as columns names
-    df.columns = [stocks[i][0] for i in range(len(stocks))]
+    df.columns = [stocks_40[i][0] for i in range(len(stocks))]
 
     return df
 
@@ -141,23 +141,23 @@ def load_datanorm():
     endnorm = datetime.date(2022, 1, 1)
 
     # Srap stock prices with yfinance
-    pricesnorm = yf.download([stocks[i][1] for i in range(len(stocks))], startnorm, endnorm)['Adj Close']
+    pricesnorm = yf.download([stocks_40[i][1] for i in range(len(stocks_40))], startnorm, endnorm)['Adj Close']
 
     dfnorm = pd.DataFrame(pricesnorm)
 
     # Add stocks names as columns names
-    dfnorm.columns = [stocks[i][0] for i in range(len(stocks))]
+    dfnorm.columns = [stocks_40[i][0] for i in range(len(stocks_40))]
 
     return dfnorm
 dfnorm = load_datanorm()
 
 normalized_data = {}
-for i in range(len(stocks)):
-    normalized_data[stocks[i][0]] = dfnorm[stocks[i][0]] / dfnorm[stocks[i][0]].iloc[0]
+for i in range(len(stocks_40)):
+    normalized_data[stocks_40[i][0]] = dfnorm[stocks_40[i][0]] / dfnorm[stocks_40[i][0]].iloc[0]
 #don't keep it as dictionnary
 dontdicnormdata = pd.DataFrame.from_dict(normalized_data)
 
-names = [stocks[i][0] for i in range(len(stocks))]
+names = [stocks_40[i][0] for i in range(len(stocks_40))]
 names.sort()
 st.sidebar.subheader('Filter displayed stocks in stock prices graph')
 stocks_selection = st.sidebar.multiselect('Select stocks to view', options=names)
@@ -178,7 +178,7 @@ if tab_selection == "Financial Dashboard":
     
 #Initialisation var nbr stock in portfolio
 vol = int(input("How much are you willing to invest (in €) ?"))
-stock_nb = 0
+stocks_nb = 0
 
 while vol < 0 :
     vol = int (input("Please use a positive number ?"))
