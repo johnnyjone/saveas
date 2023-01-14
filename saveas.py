@@ -165,16 +165,14 @@ stocks_selection = st.sidebar.multiselect('Select stocks to view', options=names
 tab_selection = st.sidebar.radio("Select a tab:", ["Financial Dashboard", "Portfolio Creation"])
 
 if tab_selection == "Financial Dashboard":
-    
-# Filter stocks according to user input
-if stocks_selection:
-    df1 = df.loc[:, df.columns.isin(stocks_selection)]
-    df2 = dontdicnormdata.loc[:, dontdicnormdata.columns.isin(stocks_selection)]
-    st.line_chart(df1)
-    st.subheader('Normalized courses')
-    st.line_chart(df2)
-else:
-    st.warning('Please select at least one stock')
+    if stocks_selection:
+        df1 = df.loc[:, df.columns.isin(stocks_selection)]
+        df2 = dontdicnormdata.loc[:, dontdicnormdata.columns.isin(stocks_selection)]
+        st.line_chart(df1)
+        st.subheader('Normalized courses')
+        st.line_chart(df2)
+    else:
+        st.warning('Please select at least one stock')
 
     
     
