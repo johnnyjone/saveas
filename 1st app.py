@@ -36,7 +36,7 @@ stocks_40 = [
     ["Airbus", "AIR.PA"],  87
     ["Alstom", "ALO.PA"],  94
     ["ArcelorMittal", "MT.AS"],  82
-    ["Atos", "ATO.PA"],  
+    ["Atos", "ATO.PA"],  86
     ["Axa", "CS.PA"],  93
     ["BNP Paribas", "BNP.PA"],  87
     ["Bouygues", "EN.PA"],  83
@@ -44,10 +44,10 @@ stocks_40 = [
     ["Carrefour", "CA.PA"],  85
     ["Crédit agricole", "ACA.PA"],  88
     ["Danone", "BN.PA"],  89
-    ["Dassault Systèmes", "DSY.PA"],
+    ["Dassault Systèmes", "DSY.PA"],  94
     ["Engie", "ENGI.PA"],  88
     ["EssilorLuxottica", "EL.PA"],  94
-    ["Hermès International", "RMS.PA"],
+    ["Hermès International", "RMS.PA"],  92
     ["Kering", "KER.PA"],  95
     ["Legrand", "LR.PA"],  91
     ["L'Oréal", "OR.PA"],  95
@@ -56,7 +56,7 @@ stocks_40 = [
     ["Orange", "ORA.PA"],  99
     ["Pernod Ricard", "RI.PA"], 81
     ["Peugeot", "PEUG.PA"],  89
-    ["Publicis Groupe", "PUB.PA"],
+    ["Publicis Groupe", "PUB.PA"],  84
     ["Renault", "RNO.PA"],  88
     ["Safran", "SAF.PA"],  90
     ["Saint-Gobain", "SGO.PA"],
@@ -65,12 +65,12 @@ stocks_40 = [
     ["Société générale", "GLE.PA"],  86
     ["Stellantis", "STLA.PA"],
     ["STMicroelectronics", "STM.PA"],  88
-    ["Teleperformance", "TEP.PA"],
-    ["Thales", "HO.PA"],
+    ["Teleperformance", "TEP.PA"], 84
+    ["Thales", "HO.PA"],  89
     ["TotalEnergies", "TTE.PA"],  90
     ["Unibail-Rodamco-Westfield", "URW.AS"],  92
     ["Veolia", "VIE.PA"],  88
     ["Vinci", "DG.PA"],  83
     ["Vivendi", "VIV.PA"],  84
-    ["Worldline", "WLN.PA"]]
+    ["Worldline", "WLN.PA"]]  88
 
