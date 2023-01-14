@@ -2,6 +2,7 @@ import datetime
 import pandas as pd
 import yfinance as yf
 import streamlit as st
+import matplotlib as plt
 
 st.title('APR Tech. Build your own portfolio')
 st.sidebar.image("APR Tech.jpg",width=300)
