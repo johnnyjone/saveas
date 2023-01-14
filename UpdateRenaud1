@@ -1,0 +1,302 @@
+import datetime
+import pandas as pd
+import yfinance as yf
+import streamlit as st
+import numpy as np
+import matplotlib as plt
+
+st.title('APR Tech. Build your own portfolio')
+st.sidebar.image("APR Tech.jpg",width=250)
+
+st.subheader('CAC40 index')
+
+#extraction des données de l'indice cac40
+@st.cache
+def load_dataindicecac():
+    startindicecac = datetime.date(2017, 1, 1)
+    endindicecac = datetime.date(2022, 1, 1)
+
+    # Srap stock prices with yfinance
+    pricesindice = yf.download('^FCHI', startindicecac, endindicecac)['Adj Close']
+
+    dfindice = pd.DataFrame(pricesindice)
+
+    return dfindice
+
+dfindice = load_dataindicecac()
+
+# Display stocks prices chart
+st.line_chart(dfindice)
+
+
+
+
+
+st.subheader('Stock prices')
+
+stocks_40 = [
+    ["Air liquide", "AI.PA"],
+    ["Airbus", "AIR.PA"],
+    ["Alstom", "ALO.PA"],
+    ["ArcelorMittal", "MT.AS"],
+    ["Atos", "ATO.PA"],
+    ["Axa", "CS.PA"],
+    ["BNP Paribas", "BNP.PA"],
+    ["Bouygues", "EN.PA"],
+    ["Capgemini", "CAP.PA"],
+    ["Carrefour", "CA.PA"],
+    ["Crédit agricole", "ACA.PA"],
+    ["Danone", "BN.PA"],
+    ["Dassault Systèmes", "DSY.PA"],
+    ["Engie", "ENGI.PA"],
+    ["EssilorLuxottica", "EL.PA"],
+    ["Hermès International", "RMS.PA"],
+    ["Kering", "KER.PA"],
+    ["Legrand", "LR.PA"],
+    ["L'Oréal", "OR.PA"],
+    ["LVMH", "MC.PA"],
+    ["Michelin", "ML.PA"],
+    ["Orange", "ORA.PA"],
+    ["Pernod Ricard", "RI.PA"],
+    ["Peugeot", "PEUG.PA"],
+    ["Publicis Groupe", "PUB.PA"],
+    ["Renault", "RNO.PA"],
+    ["Safran", "SAF.PA"],
+    ["Saint-Gobain", "SGO.PA"],
+    ["Sanofi", "SAN.PA"],
+    ["Schneider Electric", "SU.PA"],
+    ["Société générale", "GLE.PA"],
+    ["Stellantis", "STLA.PA"],
+    ["STMicroelectronics", "STM.PA"],
+    ["Teleperformance", "TEP.PA"],
+    ["Thales", "HO.PA"],
+    ["TotalEnergies", "TTE.PA"],
+    ["Unibail-Rodamco-Westfield", "URW.AS"],
+    ["Veolia", "VIE.PA"],
+    ["Vinci", "DG.PA"],
+    ["Vivendi", "VIV.PA"],
+    ["Worldline", "WLN.PA"]]
+
+# sort by ticker (because yfinance output is sorted by ticker)
+stocks_40.sort(key=lambda x: x[1])
+
+# create categories for companies
+actfin = [["Axa", "CS.PA"],
+          ["BNP Paribas", "BNP.PA"],
+          ["Crédit agricole", "ACA.PA"],
+          ["Société générale", "GLE.PA"]]
+actimmo = [["Bouygues", "EN.PA"],
+           ["Saint-Gobain", "SGO.PA"],
+           ["Vinci", "DG.PA"],
+           ["Unibail-Rodamco-Westfield", "URW.AS"]]
+actNRJ = [["Air liquide", "AI.PA"],
+          ["Engie", "ENGI.PA"],
+          ["TotalEnergies", "TTE.PA"],
+          ["Veolia", "VIE.PA"]]
+actlux = [["Hermès International", "RMS.PA"],
+          ["Kering", "KER.PA"],
+          ["LVMH", "MC.PA"]]
+actauto = [["Michelin", "ML.PA"],
+           ["Peugeot", "PEUG.PA"],
+           ["Renault", "RNO.PA"],
+           ["Stellantis", "STLA.PA"]]
+actdef = [["Airbus", "AIR.PA"],
+          ["Dassault Systèmes", "DSY.PA"],
+          ["Safran", "SAF.PA"],
+          ["Thales", "HO.PA"]]
+acttech = [["Capgemini", "CAP.PA"],
+           ["Dassault Systèmes", "DSY.PA"],
+           ["STMicroelectronics", "STM.PA"],
+           ["Worldline", "WLN.PA"]]
+actcom = [["Bouygues", "EN.PA"],
+          ["Orange", "ORA.PA"],
+          ["Publicis Groupe", "PUB.PA"],
+          ["Vivendi", "VIV.PA"]]
+cat = [actfin, actimmo, actNRJ, actlux, actauto, actdef, acttech, actcom]
+
+# Cache the web scrapped data so that it is download only once at startup
+@st.cache
+def load_data():
+    start = datetime.date(2018, 1, 1)
+    end = datetime.date(2023, 1, 1)
+
+    # Srap stock prices with yfinance
+    prices = yf.download([stocks_40[i][1] for i in range(len(stocks_40))], start, end)['Adj Close']
+
+    df = pd.DataFrame(prices)
+
+    # Add stocks names as columns names
+    df.columns = [stocks_40[i][0] for i in range(len(stocks_40))]
+
+    return df
+
+
+df = load_data()
+cours=df
+
+#calcul cours normalisés, attention peut pas réutiliser df (changé juste avant)
+@st.cache
+def load_datanorm():
+    startnorm = datetime.date(2017, 1, 1)
+    endnorm = datetime.date(2022, 1, 1)
+
+    # Srap stock prices with yfinance
+    pricesnorm = yf.download([stocks_40[i][1] for i in range(len(stocks_40))], startnorm, endnorm)['Adj Close']
+
+    dfnorm = pd.DataFrame(pricesnorm)
+
+    # Add stocks names as columns names
+    dfnorm.columns = [stocks_40[i][0] for i in range(len(stocks_40))]
+
+    return dfnorm
+dfnorm = load_datanorm()
+
+normalized_data = {}
+for i in range(len(stocks_40)):
+    normalized_data[stocks_40[i][0]] = dfnorm[stocks_40[i][0]] / dfnorm[stocks_40[i][0]].iloc[0]
+#don't keep it as dictionnary
+dontdicnormdata = pd.DataFrame.from_dict(normalized_data)
+
+names = [stocks_40[i][0] for i in range(len(stocks_40))]
+names.sort()
+st.sidebar.subheader('Filter displayed stocks in stock prices graph')
+stocks_selection = st.sidebar.multiselect('Select stocks to view', options=names)
+
+
+
+tab_selection = st.sidebar.radio("Select a tab:", ["Financial Dashboard", "Portfolio Creation"])
+
+if tab_selection == "Financial Dashboard":
+    if stocks_selection:
+        df1 = df.loc[:, df.columns.isin(stocks_selection)]
+        df2 = dontdicnormdata.loc[:, dontdicnormdata.columns.isin(stocks_selection)]
+        st.line_chart(df1)
+        st.subheader('Normalized courses')
+        st.line_chart(df2)
+    
+    else:
+        st.warning('Please select at least one stock')   
+    
+#Initialisation var nbr stock in portfolio
+vol = int(st.sidebar.number_input("How much are you willing to invest (in €) ?"))
+stock_nb = 0
+
+while vol < 0 :
+    vol = int (st.number_input("Please use a positive number ?"))
+if vol < 200 :
+    stock_nb = 3
+if 201 < vol < 1000 :
+    stock_nb = 4
+if vol > 999 :
+    stock_nb = 5
+              
+stocks_random = np.random.choice(range(len(stocks_40)), stock_nb, replace=False)
+stocks_random.sort()
+stocks = [stocks_40[i] for i in stocks_random]
+              
+# Yield calculation
+returns = cours.pct_change()
+# Calculation of average daily yields
+mean_daily_returns = returns.mean()
+# Calculation of the yield correlation matrix
+corr_matrix = returns.corr()
+
+# Max/min Yield correlation matrix
+corr_min = {}
+corr_max = {}
+corr_matrix_0 = corr_matrix.copy()
+
+for i in range(len(stocks)):
+    corr_matrix_0.iat[i, i] = 0               
+for stock in stocks:
+    corr_min[stock[0]] = [corr_matrix[stock[0]].idxmin(), corr_matrix[stock[0]][corr_matrix[stock[0]].idxmin()]]
+    corr_max[stock[0]] = [corr_matrix_0[stock[0]].idxmax(), corr_matrix_0[stock[0]][corr_matrix_0[stock[0]].idxmax()]]
+               
+# Max/min Yield covariance matrix
+cov_matrix = returns.cov()
+cov_min = {}
+cov_max = {}
+for stock in stocks:
+    cov_min[stock[0]] = [cov_matrix[stock[0]].idxmin(), cov_matrix[stock[0]][cov_matrix[stock[0]].idxmin()]]
+    cov_max[stock[0]] = [cov_matrix[stock[0]].idxmax(), cov_matrix[stock[0]][cov_matrix[stock[0]].idxmax()]]  
+               
+# Portfolio building
+num_portfolios = 15000
+results = np.zeros((3 + len(stocks), num_portfolios))
+
+# Cycle for each portfolio
+for i in range(num_portfolios):
+    # Création des poids aléatoires
+    weights = np.array(np.random.random(len(stocks)))
+    # Division des poids par leur somme afin d'obtenir un total de 1 (100%)
+    weights /= np.sum(weights)
+    
+    # Calcul du rendement et de la volatilité (moyens annualisés)
+    portfolio_return = np.sum(mean_daily_returns * weights) * 252
+    portfolio_std_dev = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
+    
+    # Affectation dans la matrice des résultats 
+    results[0, i] = portfolio_return
+    results[1, i] = portfolio_std_dev
+    results[2, i] = results[0, i] / results[1, i] # Calcul du ratio de Sharpe
+
+    # Boucle pour chaque actif
+    for j in range(len(weights)):
+        # Affectation du poids correspondant à l'actif j dans la matrice des résultats
+        results[j+3, i] = weights[j]               
+    
+# Détermination du nom des colonnes de la matrice des résultats
+columns = np.array(['ret', 'stdev', 'sharpe']) # Les colonnes des résultats calculés
+columns = np.append(columns, [stocks[i][0] for i in range(len(stocks))]) # Les colonnes de noms des titres   
+               
+# Création du dataframe
+results_frame = pd.DataFrame(results.T, columns=columns)
+               
+# Détermination des portefeuilles particuliers
+min_sharpe_port = results_frame.iloc[results_frame['sharpe'].idxmin()]
+max_sharpe_port = results_frame.iloc[results_frame['sharpe'].idxmax()]
+min_vol_port = results_frame.iloc[results_frame['stdev'].idxmin()]
+max_vol_port = results_frame.iloc[results_frame['stdev'].idxmax()]
+               
+# Choix des nuances de couleurs pour le ratio de Sharpe : de jaune à rouge
+cmap = 'YlOrRd'
+
+# Nettoyage des axes
+plt.clf()
+
+# Changement de la taille
+plt.figure(figsize=(15, 10))
+
+# Création du nuage de points pour chaque portefeuille
+plt.scatter(x=results_frame.stdev, y=results_frame.ret, c=results_frame.sharpe, cmap=cmap, alpha=0.25)
+
+# Création des points singuliers pour les portefeuilles particuliers déterminés précédemment
+## Max Sharpe en rouge (en lien avec la barre de couleur)
+plt.scatter(max_sharpe_port[1], max_sharpe_port[0], marker=("^"), color='r', s=300, label='Max Sharpe')
+## Min Sharpe en jaune (en lien avec la barre de couleur)
+plt.scatter(min_sharpe_port[1], min_sharpe_port[0], marker=("v"), color='y', s=300, label='Min Sharpe')
+## Max Vol en bleu
+plt.scatter(max_vol_port[1], max_vol_port[0], marker=("^"), color='b', s=300, label='Max Vol')
+## Min Vol en vert
+plt.scatter(min_vol_port[1], min_vol_port[0], marker=("v"), color='g', s=300, label='Min Vol')
+
+# Changement du nom des axes
+plt.xlabel('Volatilité/Ecart-Type')
+plt.ylabel('Rendement')
+
+# Affichage de la barre de couleurs, correspondant au ratio de Sharpe
+plt.set_cmap(cmap)
+plt.colorbar(label="Ratio de Sharpe")
+
+# Définition du graphique
+plt.title('Frontière efficiente du CAC40')
+
+# Activation de la grille
+plt.grid()
+
+# Ajout d'une légende
+plt.legend(labelspacing = 1.2)
+
+# Affichage
+plt.show()               
+
