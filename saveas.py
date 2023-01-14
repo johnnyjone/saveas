@@ -130,7 +130,7 @@ def load_data():
 
 
 df = load_data()
-
+cours=df
 
 #calcul cours normalisés, attention peut pas réutiliser df (changé juste avant)
 @st.cache
